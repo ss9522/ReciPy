@@ -1,8 +1,5 @@
-# import os  # Redundant
 import requests
 from random import choice
-# import json  # Redundantd659f88993504008804de96dea7416c4
-# import webbrowser  # Redundant
 from html.parser import HTMLParser
 import webbrowser
 
