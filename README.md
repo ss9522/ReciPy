@@ -370,13 +370,14 @@ That said, I'd love to give a shout-out to:
     * Allows users to easily open Spoonacular's homepage for more recipes, fulfilling the backlink requirement for free-tier API users.
 
 ##### External modules
-These libraries aren't native to Python and will require installation via [pip](https://packaging.python.org/en/latest/tutorials/installing-packages/):
+These libraries aren't native to Python and will require installation via [**pip**](https://packaging.python.org/en/latest/tutorials/installing-packages/):
 
 ```
 pip install <module_name>
-
-#If you have Python2 on your system, you might need to use pip3.
 ```
+
+_(If you have Python2 on your system, you might need to use **pip3**.)_
+
 Alternatively, feel free to point pip towards [`requirements.txt`](https://github.com/ss9522/ReciPy/blob/main/requirements.txt) from the main repository:
 
 ```
