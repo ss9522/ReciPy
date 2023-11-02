@@ -83,11 +83,10 @@ def save_to_file(filename, title, ingredients, instructions):
     fulldatetime = datetime.now().strftime("%a %d %b, %H:%M %z")
     with open(filename, "w", encoding="utf-8") as file:
         file.write(f"\n{logo}\n\nRecipe Export - {fulldatetime}\n")
-        file.write("\nDietary Preference: ")
         if vegan:
-            file.write("Vegan")
+            file.write("Dietary Preference: Vegan")
         if vegetarian:
-            file.write("Vegetarian")
+            file.write("Dietary Preference: Vegetarian")
         if len(exclusions) > 0:
             file.write("\n\nExclusions: ")
             for exclusion in exclusions:
@@ -99,7 +98,7 @@ def save_to_file(filename, title, ingredients, instructions):
             file.write(f"- {ingredient}\n")
         file.write("\nInstructions:\n")
         file.write(f"\n{instructions}\n")
-        file.write("\nThanks for using ReciPy!\nData provided by Spoonacular API (www.spoonacular.com)")
+        file.write("\nThanks for using ReciPy!\nData provided by Spoonacular API (www.spoonacular.com)\n")
 
 
 
@@ -133,7 +132,7 @@ if not vegan:
 print("\nList your intolerances separated by space (e.g. \"g w m s\") and hit Enter.\n")
 
 if vegan or vegetarian:  # Provide a list of intolerances that exclude meat options.
-    print("Options: \n\nGr[a]in    \tSul[f]ite  \t[G]luten\n\nSesa[m]e   \t[P]eanut   \t[S]oy\n\n[T]ree Nut \t[W]heat")
+    print("Options: \n\nGr[a]in    \tSul[f]ite  \t[G]luten \n\nSesa[m]e   \t[P]eanut   \t[S]oy   \n\n[T]ree Nut \t[W]heat")
 else:  # Provide a list of intolerances inclusive of meat options
     print("Options: \n\nGr[a]in    \tS[e]afood  \tSul[f]ite\n\n[G]luten   \tS[h]ellfish\tSesa[m]e\n\n[P]eanut   \t[S]oy      \t[T]ree Nut \n\n[W]heat")
 

@@ -120,7 +120,7 @@ sample_data =
 Clearly, there's a ton of information about this recipe - nearly 11,000 characters to be more specific. There was a lot more information than I was bargaining for, including various IDs for ingredients, hyperlinks to similar recipes, references to images
 (in this case, something like ![Mozzarella Sticks Picture](https://spoonacular.com/recipeImages/652513-556x370.jpg)), and short and long versions of units (e.g. ml or millilitres).
 
-I initially wanted to turn this data dump into a Python dictionary so I could try and access its values using dictionary `keys` (e.g. `data['ingredients'][1]` to access the first ingredient.
+I initially wanted to turn this data dump into a Python dictionary so I could try and access its values using dictionary `keys` (e.g. `data['ingredients'][1]` to access the first ingredient).
 
 After hitting a wall trying to directly interpret the output as a Python dictionary, my next step was to try and convert the output to a Python dictionary using `json.loads()`.
 
