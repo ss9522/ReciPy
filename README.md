@@ -55,9 +55,9 @@ To serve as a non-technical analogy, APIs are akin to waiters in a restaurant. T
 
 In short, APIs are essential to the functionality of most software we use in our day-to-day.
 
-### Diving into Spoonacular
+## Diving into Spoonacular
 
-#### Introduction
+### Introduction
 When developing an app for food, diet, and cooking, the importance of having access to a vast recipe database cannot be understated.
 
 I also had to balance this with the need for a service which would allow me to access their API for free. I also required a reasonable quota limit, since testing and debugging can rack up these calls significantly.
@@ -74,9 +74,9 @@ Spoonacular offers several benefits for my use-case, such as:
 
 * The ability to specify dietary preferences, requirements, restrictions, and intolerances.
 
-### Challenges Faced
+## Challenges Faced
 
-#### Constructing the API request
+### Constructing the API request
 Before I could begin calling the Spoonacular API, I had to learn how to use Python to generate such requests.
 
 Enter, the `requests` module. `requests` simplifies the process of making HTTP requests to an API by eliminating the need to manually add query strings to the URL. 
@@ -84,6 +84,8 @@ Enter, the `requests` module. `requests` simplifies the process of making HTTP r
 When querying the spoonacular API as an example, this is how I'd structure a request using `requests`:
 
 ```
+import requests
+
 API_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"  # replace with your key
 BASE_URL = "https://api.spoonacular.com/recipes/random"
 
@@ -107,7 +109,7 @@ The `requests` module makes light work of concatenating strings to construct the
 `https://api.spoonacular.com/recipes/random?number=1&tags=vegetarian&intolerances={YOUR_EXCLUSIONS_HERE}
 `
 
-#### Parsing the API output
+### Parsing the API output
 Obtaining an output from the API wasn't really where the challenge was, however. 
 
 The real challenge came when I received my first output, which looked something like the below, which corresponds to a _Mozzarella Sticks_ recipe.
@@ -148,7 +150,10 @@ json.decoder.JSONDecodeError: Expecting ',' delimiter: line 2 column 5166 (char 
 After multiple decode errors of various sorts, I decided to take a step back and see if I could modify my API request or create a new request as such that I can directly request the specific information I needed.
 
 I therefore modified my code to make **two** separate requests - one for a _random recipe ID_, and another for _detailed recipe information_:
+
 ```
+import requests 
+
 API_KEY = str(input("\nEnter your Spoonacular API key below.\n(Visit www.spoonacular.com/food-api to obtain a key.)\n>>> "))
 BASE_URL = "https://api.spoonacular.com/recipes/random"
 DETAILED_RECIPE_URL = "https://api.spoonacular.com/recipes/{id}/information"
@@ -187,7 +192,7 @@ if response.status_code != 200:
 This revised method would now expend 2 API credits as opposed to just one, but it also meant a much cleaner output which would be easier to parse.
 
 
-#### Cleaning HTML tags
+### Cleaning HTML tags
 My next challenge lay with the instructions - some outputs had HTML tags to indicate new lines, such as:
 
 ```
@@ -247,7 +252,7 @@ def clean_html_instructions(html_content):
 
 ```
 
-### Version Control with Git
+## Version Control with Git
 Git offers several benefits, especially for developers working in large teams. From my basic understanding, Git:
 * Tracks changes for **easy understanding** and **potential rollbacks** if needed
 
@@ -257,7 +262,7 @@ Git offers several benefits, especially for developers working in large teams. F
 
 Although I'd learned about git on a very cursory level through the use of [Codecademy](https://www.codecademy.com), I found the learning curve much steeper when committing my program to a Git repository.
 
-#### The .gitignore file
+### The .gitignore file
 When I first initialised an empty git repository in the directory where my Python file and virtul environment were located, I found that .gitignore was preventing all my files from being committed.
 
 Upon closer inspection of the .gitignore file, I found that there was a single asterisk in the file:
@@ -270,7 +275,7 @@ I decided to leave the file empty and commit everything in the directory. From c
 
 As I continue to learn about Git, I will focus my efforts on ensuring that the .gitignore file is configured correctly going forward.
 
-#### Pushing my local git repository to Github
+### Pushing my local git repository to Github
 To push my local commits to my remote Github repository, I needed to install `git bash` and the `github.cli` given that my machine runs Windows.
 
 I then used `gh auth login` to connect my local computer to my Github account, so I could begin pushing my local commits to my newly minted Github repository.
@@ -279,8 +284,8 @@ I found that the master repository had all the relevant files, but the main repo
 
 I therefore did a merge from master to main with the `--allow-unrelated-histories` tag and now, my main repository has all the needed files.
 
-### Key Takeaways from ReciPy
-#### Learning Curve
+## Key Takeaways from ReciPy
+### Learning Curve
 Building ReciPy was a huge learning curve for me. 
 
 I'd learned about all the individual components of Python programming, and had to marry everything together in this program to make it work. It was both exciting, and challenging.
@@ -293,7 +298,7 @@ Through this journey, I also learned how to:
 
 * Read through API documentation to make best use of the API's parameters (rather than try to parse through giant output strings in my own program).
 
-#### Personal Growth
+### Personal Growth
 
 There were countless instances of getting headaches while debugging, and being on the verge of giving up (especially when tackling the API output problem in the initial stage).
 
@@ -303,45 +308,80 @@ I learned how to persevere through problems and find new ways of solving them, r
 
 The satisfaction of getting this program to work, more than compensated for the struggles I bore while putting ReciPy together.
 
-### What's Next?
+## What's Next?
 
-#### Improving the program
+### Improving the program
 * I want to find a way of integrating _macro-nutrient information_ into these recipes, so users have a clearer idea of carbohydrate, fat, and protein intake.
     * For the moment, I'm still trying to figure out how to obtain this information from Spoonacular's API output - but some recipes have this information, while others don't.
 
-* ~~It would be helpful for users to save these recipes for future reference, since in this program's existing form, recipes are nuked once the program is closed.~~ *(Updated on 01/Nov/23, save to TXT now working.)*
+* ~~It would be helpful for users to save these recipes for future reference, since in this program's existing form, recipes are nuked once the program is closed.~~ *(Updated on 01/Nov/23, save to TXT now working!)*
 
-#### Learning new technologies
+### Learning new technologies
 As I master programming through Python, I look forward to transferring these skills to C++ and Java. 
 
 These languages are less syntactically friendly in comparison to Python, but I'm hoping that my basic understanding of fundamental concepts will make this transition more seamless.
 
-### Conclusion
-Overall, this project has had the biggest impact on my learning - while it's easy to follow Codecademy's step-by-step guidance, it's a much taller order when you're essentially on your own.
+## Conclusion
+Overall, this project has had the biggest impact on my programming journey. 
+
+While it's easy to follow Codecademy's step-by-step guidance, it's a much taller order when you're essentially on your own.
 
 That said, I'd love to give a shout-out to:
-* **Codecademy**, for adding much-needed structure to my learning journey;
-* **ChatGPT-4**, for aiding my debugging and saving me countless hours in the process; and of course,
-* **Wifey**, for the countless hugs she gave me whilst I was debugging and optimising the program.
+* [**Codecademy**](www.codecademy.com), for adding much-needed structure to my learning journey;
+* [**ChatGPT-4**](chat.openai.com), for aiding my debugging and saving me countless hours in the process; and of course,
+* [**Wifey**](#), for the countless hugs she gave me whilst I was debugging and optimising the program.
 
-### Appendix
-#### Resources Used:
-##### Software Packages
-* [**PyCharm IDE - Community Edition**](https://www.jetbrains.com/pycharm/), my main IDE for writing ReciPy.
+## Appendix
+### Resources Used:
+#### Software Packages
+* [**PyCharm IDE - Community Edition**](https://www.jetbrains.com/pycharm/)
     * Helped me create a virtual environment for my Python code
 
-* [**Visual Studio Code**](https://code.visualstudio.com/), my main IDE for writing ReciPy.
+* [**Visual Studio Code**](https://code.visualstudio.com/) (my main IDE for this project):
     * Several plugins and extensions, including Python and Git
     * Highly customisable and resource-efficient compared to most IDEs
 
-* [**Python 3.11 (Windows Store)**](https://apps.microsoft.com/detail/python-3-11/9NRWMJP3717K?hl=en-US)
+* [**Python 3.11 (Windows Store)**](https://apps.microsoft.com/detail/python-3-11/9NRWMJP3717K?hl=en-US):
     * Required for Visual Studio Code's Python extension to work.
 
-* [**GitHub Desktop** (optional)](https://desktop.github.com/)
+* [**GitHub Desktop** (optional)](https://desktop.github.com/):
     * Brings the GitHub experience to a standalone program, but can be fulfilled through the browser.
 
-* [**GitHub CLI**](https://cli.github.com/) 
+* [**GitHub CLI**](https://cli.github.com/):
     * Required for integration with GitHub to push local repositories to the web. 
 
-* [**Git Bash** (only for Windows)](https://gitforwindows.org/)
+* [**Git Bash** (only for Windows)](https://gitforwindows.org/):
     * Required to perform Git operations locally on Windows machines, though _VS Code could replace this functionality entirely_.
+
+#### Python Modules
+##### In-built modules & functions
+* `HTMLParser` from the [`html.parser`](https://docs.python.org/3/library/html.parser.html) library:
+    * To create the subclass `MyHTMLParser()` with added function definitions for parsing HTML strings from Spoonacular's API output.
+
+* `choice` from the [`random`](https://docs.python.org/3/library/random.html) library:
+    * To choose a random goodbye message from a list of 4, at the end of the program flow.
+
+* `datetime` from the [`datetime`](https://docs.python.org/3/library/datetime.html) library:
+    * I added date/time functionality for the purposes of:
+        * Letting users know when exactly they saved their output to a TXT file; and
+        * Ensuring each file name was unique, avoiding the possibility of being overwritten by a new export.
+
+* The [`webbrowser`](https://docs.python.org/3/library/webbrowser.html) library:
+    * Allows users to easily open Spoonacular's homepage for more recipes, fulfilling the backlink requirement for free-tier API users.
+
+##### External modules
+_These libraries aren't native to Python and will require installation via [pip](https://packaging.python.org/en/latest/tutorials/installing-packages/):_
+
+```
+pip install <module_name>
+
+#If you have Python2 on your system, you might need to use pip3.
+```
+Alternatively, feel free to point pip towards [`requirements.txt`](https://github.com/ss9522/ReciPy/blob/main/requirements.txt) from the main repository:
+
+```
+pip install -r requirements.txt
+```
+* [`requests`](https://pypi.org/project/requests/) library
+    * Instrumental to bringing functionality for API interaction to Python.
+
