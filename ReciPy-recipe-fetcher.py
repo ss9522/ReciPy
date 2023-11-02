@@ -1,8 +1,12 @@
+import os
 import requests
 from random import choice
 from html.parser import HTMLParser
 from datetime import datetime
 import webbrowser
+
+# <<< Change working directory to prevent files being saved to user's root directory >>>
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # <<< Start of class, function, and API construction definitions >>>
 class MyHTMLParser(HTMLParser):  # Subclass inherited from the imported HTMLParser
