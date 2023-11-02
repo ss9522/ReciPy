@@ -149,7 +149,7 @@ json.decoder.JSONDecodeError: Expecting ',' delimiter: line 2 column 5166 (char 
 
 After multiple decode errors of various sorts, I decided to take a step back and see if I could modify my API request or create a new request as such that I can directly request the specific information I needed.
 
-I therefore modified my code to make **two** separate requests - one for a _random recipe ID_, and another for _detailed recipe information_:
+I therefore modified my code to make **two** separate requests - one for a _random recipe ID_, and another for _detailed recipe information_ based on the ID from the first step:
 
 ```
 import requests 
@@ -189,8 +189,7 @@ if response.status_code != 200:
     exit()
 ```
 
-This revised method would now expend 2 API credits as opposed to just one, but it also meant a much cleaner output which would be easier to parse.
-
+This revised method would now expend 2 API credits as opposed to 1, but it meant (mercifully) a smaller and cleaner output which would be much easier to parse.
 
 ### Cleaning HTML tags
 My next challenge lay with the instructions - some outputs had HTML tags to indicate new lines, such as:
@@ -330,6 +329,14 @@ That said, I'd love to give a shout-out to:
 * [**Codecademy**](www.codecademy.com), for adding much-needed structure to my learning journey;
 * [**ChatGPT-4**](chat.openai.com), for aiding my debugging and saving me countless hours in the process; and of course,
 * [**Wifey**](#), for the countless hugs she gave me whilst I was debugging and optimising the program.
+
+Before I started this project, I used to feel somewhat daunted by the prospects (and challenges) of creating programs like this.
+
+And now, I feel a stronger sense of _wanting_ to code, to build something cool that actually works as intended.
+
+Until next time,
+
+\- S
 
 ## Appendix
 ### Resources Used:
