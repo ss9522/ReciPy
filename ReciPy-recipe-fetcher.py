@@ -82,7 +82,7 @@ def end_greeting():
     print("\n" + choice(greeting))
     
 def save_to_file(filename, title, ingredients, instructions):
-    directory_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'recipes')
+    directory_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ReciPy')
     if not os.path.exists(directory_path):
         os.makedirs(directory_path) 
     
@@ -202,7 +202,6 @@ response = requests.get(BASE_URL, headers=headers, params=parameters)  # API req
 
 if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
     print(f"Error fetching random recipe: Code - {response.status_code}")  # Verbose
-    exit()
 
 recipe_id = response.json()["recipes"][0]["id"]
 
@@ -210,7 +209,6 @@ response = requests.get(DETAILED_RECIPE_URL.format(id=recipe_id), params={"apiKe
 
 if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
     print(f"Error fetching detailed recipe: Code - {response.status_code}")
-    exit()
 
 recipe_info = response.json()
 # Uncomment to debug
