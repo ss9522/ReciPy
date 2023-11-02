@@ -50,11 +50,12 @@ def clean_html_instructions(html_content):
 def get_yes_no_input(prompt):  # Prompt the user for a yes or no input. Returns True for 'y' and False for 'n'.
     
     while True:  # Keeps loop running until exit condition (return) is met.
-        choice = str(input(prompt)).lower()  # Parses all inputs as lowercase
-        if choice[0] == 'y' or choice[0] == 'n':
+        choice = str(input(prompt + "\n[Y]es\t[N]o\n>>> ")).lower()  # Parses all inputs as lowercase
+        if len(choice) > 0 and (choice[0] == 'y' or choice[0] == 'n'):
             return choice[0] == 'y'  # Returns boolean True/False depending on choice being '[y]es'
         else:
-            print("Invalid input. Please enter 'y' or 'n'\n>>> ")  # If input doesn't start with 'y' or 'n', keep asking the user until it does (within while True loop).
+            print("Invalid input.\n")  # If input doesn't start with 'y' or 'n', keep asking the user until it does (within while True loop).
+
 
 def extract_recipe_information(data):
     title = data.get('title', '')  # Extracts title from recipe info.
@@ -99,23 +100,23 @@ print("Welcome to ReciPy, a simple Python program for providing recipes.\n*Recip
 # <<< End of program introduction >>>
 
 # <<< Start of User Preferences >>>
-vegan = get_yes_no_input("Are you vegan? [Y]es/[N]o\n>>> ")
+vegan = get_yes_no_input("Are you vegan?")
 vegetarian = False
 dairy_ok = False
 eggs_ok = False
 if not vegan:
-    vegetarian = get_yes_no_input("\nAre you vegetarian? ([Y]es/[N]o)\n>>> ")
-    dairy_ok = get_yes_no_input("\nIs dairy ok? ([Y]es/[N]o)\n>>> ")
-    eggs_ok = get_yes_no_input("\nAnd what about eggs? ([Y]es/[N]o)\n>>> ")
+    vegetarian = get_yes_no_input("\nAre you vegetarian?")
+    dairy_ok = get_yes_no_input("\nIs dairy ok?")
+    eggs_ok = get_yes_no_input("\nAnd what about eggs?")
 
-print("\nList your intolerances separated by space (e.g. \"g w m s\") and hit Enter.")
+print("\nList your intolerances separated by space (e.g. \"g w m s\") and hit Enter.\n")
 
 if vegan or vegetarian:  # Provide a list of intolerances that exclude meat options.
-    print("Options: \nGr[a]in, Sul[f]ite, [G]luten, \nSesa[m]e, [P]eanut, [S]oy, \n[T]ree Nut, [W]heat")
+    print("Options: \n\nGr[a]in    \tSul[f]ite  \t[G]luten\n\nSesa[m]e   \t[P]eanut   \t[S]oy\n\n[T]ree Nut \t[W]heat")
 else:  # Provide a list of intolerances inclusive of meat options
-    print("Options: \nGr[a]in, S[e]afood, Sul[f]ite, \n[G]luten, S[h]ellfish, Sesa[m]e, \n[P]eanut, [S]oy, [T]ree Nut, [W]heat")
+    print("Options: \n\nGr[a]in    \tS[e]afood  \tSul[f]ite\n\n[G]luten   \tS[h]ellfish\tSesa[m]e\n\n[P]eanut   \t[S]oy      \t[T]ree Nut \n\n[W]heat")
 
-intolerances_input = str(input("Or else, just hit Enter if you have no intolerances.\n>>> ")).lower()  # Requires user input
+intolerances_input = str(input("\nOr else, just hit Enter if you have no intolerances.\n>>> ")).lower()  # Requires user input
 
 intolerances_map = {'a': 'grain', 
                     'e': 'seafood', 
