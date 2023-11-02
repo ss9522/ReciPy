@@ -186,7 +186,7 @@ This revised method would now expend 2 API credits as opposed to just one, but i
 
 
 #### Cleaning HTML tags
-My next challenge lay with the instructions - some outputs had html tags to indicate new lines, such as:
+My next challenge lay with the instructions - some outputs had HTML tags to indicate new lines, such as:
 
 ```
 <li>example</li><li>example2</li>
@@ -204,7 +204,7 @@ class MyHTMLParser(HTMLParser):
         self.recording = False
 
     def handle_starttag(self, tag, attrs):
-        if tag == 'li':  # Condition to check for tags starting with <li>.
+        if tag == 'li':
             self.recording = True
             self.data = ''
 
@@ -225,20 +225,22 @@ def clean_html_instructions(html_content):
 
     def add_period(instruction):
         instruction = instruction.strip()
-        if not instruction.endswith('.'):
-            instruction += '.'
+        if not instruction.endswith("."):
+            instruction += "."
         return instruction
-    
-    if "<li>" in html_content:
+
+    if any(tag in html_content for tag in ["<li>", "<ol>"]):  
         parser = MyHTMLParser()
         parser.feed(html_content)
         cleaned_instructions_list = [add_period(step) for step in parser.instructions]
-        cleaned_instructions = '\n'.join(f"{index}. {step}" for index, step in enumerate(cleaned_instructions_list, 1))
+        html_content = ". ".join(cleaned_instructions_list)
+
+    instructions_list = [add_period(instr) for instr in html_content.split(".") if instr.strip()]
     
-    else:
-        instructions_list = [add_period(instr) for instr in html_content.split('.') if instr.strip()]
-        cleaned_instructions = '\n'.join(f"{index}. {step}" for index, step in enumerate(instructions_list, 1))
+    cleaned_instructions = "\n".join(f"{index}. {step}" for index, step in enumerate(instructions_list, 1))
     
+    cleaned_instructions = cleaned_instructions.replace("<ol>", "").replace("</ol>", "").replace("<p>", "").replace("</p>", "").strip()
+
     return cleaned_instructions
 
 ```
@@ -305,9 +307,7 @@ The satisfaction of getting this program to work, more than compensated for the 
 * I want to find a way of integrating _macro-nutrient information_ into these recipes, so users have a clearer idea of carbohydrate, fat, and protein intake.
     * For the moment, I'm still trying to figure out how to obtain this information from Spoonacular's API output - but some recipes have this information, while others don't.
 
-* It would be helpful for users to save these recipes for future reference, since in this program's existing form, recipes are nuked once the program is closed.
-    * A small workaround would be to highlight the terminal output and save it to a text file.
-    * A potential long-term solution would be to integrate `with open()` and `sys.stdout` to save all printed outputs to a text file.
+* ~~It would be helpful for users to save these recipes for future reference, since in this program's existing form, recipes are nuked once the program is closed.~~ *(Updated on 01/Nov/23, save to TXT now working.)*
 
 #### Learning new technologies
 As I master programming through Python, I look forward to transferring these skills to C++ and Java. 
