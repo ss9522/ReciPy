@@ -6,7 +6,7 @@ from datetime import datetime
 import webbrowser
 
 # <<< Change working directory to prevent files being saved to user's root directory >>>
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
+# os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # <<< Start of class, function, and API construction definitions >>>
 class MyHTMLParser(HTMLParser):  # Subclass inherited from the imported HTMLParser
@@ -37,8 +37,6 @@ def clean_html_instructions(html_content):
             instruction += "."  # Add a period if not already there.
         return instruction
 
-    
-    
     if any(tag in html_content for tag in ["<li>", "<ol>"]):  # The block inside this condition will execute if <li> or <ol> tags exist in the content.
         parser = MyHTMLParser()  # Create an instance of the parser.
         parser.feed(html_content)  # Feed the html content to the parser.
@@ -84,7 +82,13 @@ def end_greeting():
     print("\n" + choice(greeting))
     
 def save_to_file(filename, title, ingredients, instructions):
+    directory_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'recipes')
+    if not os.path.exists(directory_path):
+        os.makedirs(directory_path) 
+    
+    full_file_path = os.path.join(directory_path, filename)
     fulldatetime = datetime.now().strftime("%a %d %b, %H:%M %z")
+    
     with open(filename, "w", encoding="utf-8") as file:
         file.write(f"\n{logo}\n\nRecipe Export - {fulldatetime}\n")
         if vegan:
