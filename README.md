@@ -328,7 +328,7 @@ While it's easy to follow Codecademy's step-by-step guidance, it's a much taller
 That said, I'd love to give a shout-out to:
 * [**Codecademy**](www.codecademy.com), for adding much-needed structure to my learning journey;
 * [**ChatGPT-4**](chat.openai.com), for aiding my debugging and saving me countless hours in the process; and of course,
-* [**Wifey**](#), for the countless hugs she gave me whilst I was debugging and optimising the program.
+* **Wifey**, for the countless hugs she gave me whilst I was debugging and optimising the program.
 
 Before I started this project, I used to feel somewhat daunted by the prospects (and challenges) of creating programs like this.
 
