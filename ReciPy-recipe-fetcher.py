@@ -3,6 +3,7 @@ import requests
 from random import choice
 from html.parser import HTMLParser
 from datetime import datetime
+from time import sleep as slp
 import webbrowser
 
 # <<< Change working directory to prevent files being saved to user's root directory >>>
@@ -23,7 +24,7 @@ class MyHTMLParser(HTMLParser):  # Subclass inherited from the imported HTMLPars
     def handle_endtag(self, tag):
         if tag == "li" and self.recording:  # Condition to check for tags ending </li> and if the parser is already capturing contents inside the <li>example</li>.
             self.recording = False  # Stop recording at end of tag (</li>).
-            self.instructions.append(self.data.strip()) # Strip whitespace before/after content of each tag, then append to instructions list.
+            self.instructions.append(self.data.strip())  # Strip whitespace before/after content of each tag, then append to instructions list.
 
     def handle_data(self, data):
         if self.recording:  # Should only work when recording flag is enabled.
@@ -73,14 +74,13 @@ def display_recipe(title, ingredients, instructions):  # Define function that di
         print(f"- {ingredient}")    # |
     print("\nInstructions:")
     print(instructions)  # Prints instructions from clean_html_instructions output
-
-def end_greeting():
-    greeting = ["Bon appetit!", "Enjoy the meal!", "Happy cooking!", "*Chef's kiss*"]
-    visit_site = get_yes_no_input("\nWould you like to visit Spoonacular to find more recipes?")
-    if visit_site:
-        webbrowser.open("https://www.spoonacular.com/")
-    print("\n" + choice(greeting))
     
+def make_fs_friendly(title):
+    unwanted_chars = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
+    for char in unwanted_chars:
+        title = title.replace(char, "-")
+    return title
+
 def save_to_file(filename, title, ingredients, instructions):
     directory_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ReciPy')
     if not os.path.exists(directory_path):
@@ -89,7 +89,7 @@ def save_to_file(filename, title, ingredients, instructions):
     full_file_path = os.path.join(directory_path, filename)
     fulldatetime = datetime.now().strftime("%a %d %b, %H:%M %z")
     
-    with open(filename, "w", encoding="utf-8") as file:
+    with open(full_file_path, "w", encoding="utf-8") as file:
         file.write(f"\n{logo}\n\nRecipe Export - {fulldatetime}\n")
         if vegan:
             file.write("Dietary Preference: Vegan")
@@ -108,7 +108,39 @@ def save_to_file(filename, title, ingredients, instructions):
         file.write(f"\n{instructions}\n")
         file.write("\nThanks for using ReciPy!\nData provided by Spoonacular API (www.spoonacular.com)\n")
 
+def find_recipe():  # Encapsulated program flow into function to make way for continuous loop
+    response = requests.get(BASE_URL, headers=headers, params=parameters)  # API request
 
+    if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
+        print(f"Error fetching random recipe: Code - {response.status_code}")  # Verbose
+
+    recipe_id = response.json()["recipes"][0]["id"]
+
+    response = requests.get(DETAILED_RECIPE_URL.format(id=recipe_id), params={"apiKey": API_KEY})
+
+    if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
+        print(f"Error fetching detailed recipe: Code - {response.status_code}")
+
+    recipe_info = response.json()
+    # Uncomment to debug
+    # print("--------------------\nDebug Output: Raw Instructions:", recipe_info.get("instructions"),"\n--------------------")
+
+    print("\n")
+    title, ingredients, instructions = extract_recipe_information(recipe_info)
+
+    print("\n")
+    display_recipe(title, ingredients, instructions)
+
+    print("\n")
+    if get_yes_no_input("Would you like to save this recipe as a text file?"):
+        current_datetime = datetime.now().strftime("%d-%m-%y-%H%M%z")
+        fs_friendly_title = make_fs_friendly(title)
+        filename = f"ReciPy - {fs_friendly_title} - {current_datetime}.txt"
+        save_to_file(filename, title, ingredients, instructions)
+        print(f"\nRecipe saved to {filename}.\n")
+
+    greeting = ["Bon appetit!", "Enjoy the meal!", "Happy cooking!", "*Chef's kiss*"]
+    print("\n" + choice(greeting))
 
 # <<< End of class, function, and API construction definitions. >>>
 
@@ -198,34 +230,19 @@ headers = {  # Headers for the API call
 }
 # <<< End of API call construction >>>
 
-response = requests.get(BASE_URL, headers=headers, params=parameters)  # API request
+while True:
+    find_recipe()
+    continue_search = get_yes_no_input("Do you want to find another recipe?")
+    if not continue_search:
+        visit_site = get_yes_no_input("\nWould you like to visit Spoonacular?")
+        if visit_site:
+            webbrowser.open("https://www.spoonacular.com/")
+        break
 
-if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
-    print(f"Error fetching random recipe: Code - {response.status_code}")  # Verbose
-
-recipe_id = response.json()["recipes"][0]["id"]
-
-response = requests.get(DETAILED_RECIPE_URL.format(id=recipe_id), params={"apiKey": API_KEY})
-
-if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
-    print(f"Error fetching detailed recipe: Code - {response.status_code}")
-
-recipe_info = response.json()
-# Uncomment to debug
-# print("--------------------\nDebug Output: Raw Instructions:", recipe_info.get("instructions"),"\n--------------------")
-
-print("\n")
-title, ingredients, instructions = extract_recipe_information(recipe_info)
-
-print("\n")
-display_recipe(title, ingredients, instructions)
-
-print("\n")
-if get_yes_no_input("Would you like to save this recipe as a text file?"):
-    current_datetime = datetime.now().strftime("%d-%m-%y-%H%M%z")
-    filename = f"ReciPy - {title} - {current_datetime}.txt"
-    save_to_file(filename, title, ingredients, instructions)
-    print(f"\nRecipe saved to {filename}.\n")
-
-end_greeting()
-input("\nPress [Enter] to exit...\n>>> ")
+input("\nPress [Enter] to exit...\n>>> "); print("Enter")
+print("\nReciPy will exit in 5 seconds.", end="")
+slp(1)
+for i in range(5, 1, -1):
+    print('.', end="", flush=True);
+    slp(1)
+print("\n\nExit Code [0]\n")
