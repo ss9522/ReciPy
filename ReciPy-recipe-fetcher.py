@@ -60,17 +60,30 @@ def get_yes_no_input(prompt):  # Prompt the user for a yes or no input. Returns 
             print("Invalid input.\n")  # If input doesn't start with "y" or "n", keep asking the user until it does (within while True loop).
 
 def find_recipe():  # Encapsulated program flow into function to make way for continuous loop
+    print("\nFinding recipe", end="")
+    for i in range(3, 0, -1):
+        print(".", end="", flush=True)
+        slp(1)
     response = requests.get(BASE_URL, headers=headers, params=parameters)  # API request
 
     if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
-        print(f"Error fetching random recipe: Code - {response.status_code}")  # Verbose
+        print(f"\n\nError fetching random recipe: Code - {response.status_code}\n")  # Verbose
+        if response.status_code == 401:
+            global API_KEY
+            API_KEY = input("Not Authorised. Could you check your API key and re-enter it below?\n>>> ")
+            headers["x-api-key"] = API_KEY
+            print("\n\nRetrying", end="")
+            for i in range(3, 0, -1):
+                print(".", end="", flush=True)
+                slp(1)
+            response = requests.get(BASE_URL, headers=headers, params=parameters)
 
     recipe_id = response.json()["recipes"][0]["id"]
 
     response = requests.get(DETAILED_RECIPE_URL.format(id=recipe_id), params={"apiKey": API_KEY})
 
     if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
-        print(f"Error fetching detailed recipe: Code - {response.status_code}")
+        print(f"\n\nError fetching detailed recipe: Code - {response.status_code}")
 
     recipe_info = response.json()
     # Uncomment to debug
@@ -85,15 +98,24 @@ def find_recipe():  # Encapsulated program flow into function to make way for co
     print("\n")
     if get_yes_no_input("Would you like to save this recipe as a text file?"):
         current_datetime = datetime.now().strftime("%d-%m-%y-%H%M%z")
+        print("\nMaking sure filename is valid", end="")
+        for i in range(3, 0, -1):
+            print(".", end="", flush=True)
+            slp(0.5)
         fs_friendly_title = make_fs_friendly(title)
-        filename = f"ReciPy - {fs_friendly_title} - {current_datetime}.txt"
+        filename = f"ReciPy - {fs_friendly_title} - {current_datetime}.md"
         save_to_file(filename, title, ingredients, instructions)
-        print(f"\nRecipe saved to {filename}.\n")
+        print(f"\n\nRecipe saved to {filename}. Please see \"ReciPy\" folder.")
 
     greeting = ["Bon appetit!", "Enjoy the meal!", "Happy cooking!", "*Chef's kiss*"]
     print("\n" + choice(greeting))
 
 def extract_recipe_information(data):
+    print("Extracting recipe information", end="")
+    for i in range(3, 0, -1):
+        print(".", end="", flush=True)
+        slp(1)
+    print("\n")
     title = data.get("title", "")  # Extracts title from recipe info.
     ingredients = [ingredient.get("original", "") for ingredient in data.get("extendedIngredients", [])]  # Extracts extended ingredients from API response.
     html_instructions = data.get("instructions", "")  # Extracts unparsed HTML-formatted instructions, will need further cleaning prior to output.
@@ -123,23 +145,29 @@ def save_to_file(filename, title, ingredients, instructions):
     fulldatetime = datetime.now().strftime("%a %d %b, %H:%M %z")
     
     with open(full_file_path, "w", encoding="utf-8") as file:
-        file.write(f"\n{logo}\n\nRecipe Export - {fulldatetime}\n")
+        print("\n\nGenerating File", end="")
+        for i in range(5, 0, -1):
+            print(".", end="", flush=True)
+            slp(1)
+        file.write(f"\n```\n{logo}\n```")
+        file.write("\n\n# ReciPy Recipe Export\n")
+        file.write(f"Generated on {fulldatetime}\n")
         if vegan:
-            file.write("Dietary Preference: Vegan")
+            file.write("**Dietary Preference:**\nVegan")
         if vegetarian:
-            file.write("Dietary Preference: Vegetarian")
+            file.write("**Dietary Preference:**\nVegetarian")
         if len(exclusions) > 0:
-            file.write("\n\nExclusions: ")
+            file.write("\n\n### Exclusions & Intolerances: ")
             for exclusion in exclusions:
                 exclusion_cap = exclusion.capitalize()
-                file.write(f"\n- {exclusion_cap}")
-        file.write(f"\n\nRecipe: {title}\n")
-        file.write("\nIngredients:\n")
+                file.write(f"\n* {exclusion_cap}")
+        file.write(f"\n\n## Recipe: {title}\n")
+        file.write("\n### Ingredients:\n")
         for ingredient in ingredients:
-            file.write(f"- {ingredient}\n")
-        file.write("\nInstructions:\n")
+            file.write(f"* {ingredient}\n")
+        file.write("\n### Instructions:\n")
         file.write(f"\n{instructions}\n")
-        file.write("\nThanks for using ReciPy!\nData provided by Spoonacular API (www.spoonacular.com)\n")
+        file.write("\nThanks for using **ReciPy**!\nData provided by [Spoonacular](www.spoonacular.com)\n")
 
 def exit_sequence():
     input("\nPress [Enter] to exit\n>>> ")
@@ -171,8 +199,8 @@ print("Welcome to ReciPy, a simple Python program for providing recipes.\n*Recip
 # <<< Start of User Preferences >>>
 vegan = get_yes_no_input("Are you vegan?")
 vegetarian = False
-# dairy_ok = False
-# eggs_ok = False
+dairy_ok = False
+eggs_ok = False
 if not vegan:
     vegetarian = get_yes_no_input("\nAre you vegetarian?")
     dairy_ok = get_yes_no_input("\nIs dairy ok?")
