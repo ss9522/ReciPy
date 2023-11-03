@@ -232,7 +232,7 @@ headers = {  # Headers for the API call
 
 while True:
     find_recipe()
-    continue_search = get_yes_no_input("Do you want to find another recipe?")
+    continue_search = get_yes_no_input("\nDo you want to find another recipe?")
     if not continue_search:
         visit_site = get_yes_no_input("\nWould you like to visit Spoonacular?")
         if visit_site:
