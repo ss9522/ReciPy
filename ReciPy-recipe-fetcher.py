@@ -59,6 +59,39 @@ def get_yes_no_input(prompt):  # Prompt the user for a yes or no input. Returns 
         else:
             print("Invalid input.\n")  # If input doesn't start with 'y' or 'n', keep asking the user until it does (within while True loop).
 
+def find_recipe():  # Encapsulated program flow into function to make way for continuous loop
+    response = requests.get(BASE_URL, headers=headers, params=parameters)  # API request
+
+    if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
+        print(f"Error fetching random recipe: Code - {response.status_code}")  # Verbose
+
+    recipe_id = response.json()["recipes"][0]["id"]
+
+    response = requests.get(DETAILED_RECIPE_URL.format(id=recipe_id), params={"apiKey": API_KEY})
+
+    if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
+        print(f"Error fetching detailed recipe: Code - {response.status_code}")
+
+    recipe_info = response.json()
+    # Uncomment to debug
+    # print("--------------------\nDebug Output: Raw Instructions:", recipe_info.get("instructions"),"\n--------------------")
+
+    print("\n")
+    title, ingredients, instructions = extract_recipe_information(recipe_info)
+
+    print("\n")
+    display_recipe(title, ingredients, instructions)
+
+    print("\n")
+    if get_yes_no_input("Would you like to save this recipe as a text file?"):
+        current_datetime = datetime.now().strftime("%d-%m-%y-%H%M%z")
+        fs_friendly_title = make_fs_friendly(title)
+        filename = f"ReciPy - {fs_friendly_title} - {current_datetime}.txt"
+        save_to_file(filename, title, ingredients, instructions)
+        print(f"\nRecipe saved to {filename}.\n")
+
+    greeting = ["Bon appetit!", "Enjoy the meal!", "Happy cooking!", "*Chef's kiss*"]
+    print("\n" + choice(greeting))
 
 def extract_recipe_information(data):
     title = data.get("title", "")  # Extracts title from recipe info.
@@ -108,39 +141,14 @@ def save_to_file(filename, title, ingredients, instructions):
         file.write(f"\n{instructions}\n")
         file.write("\nThanks for using ReciPy!\nData provided by Spoonacular API (www.spoonacular.com)\n")
 
-def find_recipe():  # Encapsulated program flow into function to make way for continuous loop
-    response = requests.get(BASE_URL, headers=headers, params=parameters)  # API request
-
-    if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
-        print(f"Error fetching random recipe: Code - {response.status_code}")  # Verbose
-
-    recipe_id = response.json()["recipes"][0]["id"]
-
-    response = requests.get(DETAILED_RECIPE_URL.format(id=recipe_id), params={"apiKey": API_KEY})
-
-    if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
-        print(f"Error fetching detailed recipe: Code - {response.status_code}")
-
-    recipe_info = response.json()
-    # Uncomment to debug
-    # print("--------------------\nDebug Output: Raw Instructions:", recipe_info.get("instructions"),"\n--------------------")
-
-    print("\n")
-    title, ingredients, instructions = extract_recipe_information(recipe_info)
-
-    print("\n")
-    display_recipe(title, ingredients, instructions)
-
-    print("\n")
-    if get_yes_no_input("Would you like to save this recipe as a text file?"):
-        current_datetime = datetime.now().strftime("%d-%m-%y-%H%M%z")
-        fs_friendly_title = make_fs_friendly(title)
-        filename = f"ReciPy - {fs_friendly_title} - {current_datetime}.txt"
-        save_to_file(filename, title, ingredients, instructions)
-        print(f"\nRecipe saved to {filename}.\n")
-
-    greeting = ["Bon appetit!", "Enjoy the meal!", "Happy cooking!", "*Chef's kiss*"]
-    print("\n" + choice(greeting))
+def exit_sequence():
+    input("\nPress [Enter] to exit\n>>> ")
+    print("\nReciPy will exit in 5 seconds.", end="")
+    slp(1)
+    for i in range(5, 1, -1):
+        print('.', end="", flush=True)
+        slp(1)
+    print("\n\nExit Code [0]\n")
 
 # <<< End of class, function, and API construction definitions. >>>
 
@@ -232,17 +240,9 @@ headers = {  # Headers for the API call
 
 while True:
     find_recipe()
-    continue_search = get_yes_no_input("\nDo you want to find another recipe?")
-    if not continue_search:
-        visit_site = get_yes_no_input("\nWould you like to visit Spoonacular?")
-        if visit_site:
+    if not get_yes_no_input("\nDo you want to find another recipe?"):
+        if get_yes_no_input("\nWould you like to visit Spoonacular?"):
             webbrowser.open("https://www.spoonacular.com/")
         break
 
-input("\nPress [Enter] to exit...\n>>> "); print("Enter")
-print("\nReciPy will exit in 5 seconds.", end="")
-slp(1)
-for i in range(5, 1, -1):
-    print('.', end="", flush=True)
-    slp(1)
-print("\n\nExit Code [0]\n")
+exit_sequence()
