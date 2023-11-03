@@ -50,14 +50,14 @@ def clean_html_instructions(html_content):
 
     return cleaned_instructions
 
-def get_yes_no_input(prompt):  # Prompt the user for a yes or no input. Returns True for 'y' and False for 'n'.
+def get_yes_no_input(prompt):  # Prompt the user for a yes or no input. Returns True for "y" and False for "n".
     
     while True:  # Keeps loop running until exit condition (return) is met.
         choice = str(input(prompt + "\n[Y]es\t[N]o\n>>> ")).lower()  # Parses all inputs as lowercase
         if len(choice) > 0 and (choice[0] == "y" or choice[0] == "n"):
-            return choice[0] == "y"  # Returns boolean True/False depending on choice being '[y]es'
+            return choice[0] == "y"  # Returns boolean True/False depending on choice being "[y]es"
         else:
-            print("Invalid input.\n")  # If input doesn't start with 'y' or 'n', keep asking the user until it does (within while True loop).
+            print("Invalid input.\n")  # If input doesn't start with "y" or "n", keep asking the user until it does (within while True loop).
 
 def find_recipe():  # Encapsulated program flow into function to make way for continuous loop
     response = requests.get(BASE_URL, headers=headers, params=parameters)  # API request
@@ -109,13 +109,13 @@ def display_recipe(title, ingredients, instructions):  # Define function that di
     print(instructions)  # Prints instructions from clean_html_instructions output
     
 def make_fs_friendly(title):
-    unwanted_chars = ['<', '>', ':', '"', '/', '\\', '|', '?', '*']
+    unwanted_chars = ["<", ">", ":", "\"", "/", "\\", "|", "?", "*"]
     for char in unwanted_chars:
         title = title.replace(char, "-")
     return title
 
 def save_to_file(filename, title, ingredients, instructions):
-    directory_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'ReciPy')
+    directory_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ReciPy")
     if not os.path.exists(directory_path):
         os.makedirs(directory_path) 
     
@@ -146,7 +146,7 @@ def exit_sequence():
     print("\nReciPy will exit in 5 seconds.", end="")
     slp(1)
     for i in range(5, 1, -1):
-        print('.', end="", flush=True)
+        print(".", end="", flush=True)
         slp(1)
     print("\n\nExit Code [0]\n")
 
@@ -207,9 +207,9 @@ for i in intolerances_input.split():
         already_in_exclusions.add(i)  # Add to set() to exclude duplicates in exclusions
 
 if not dairy_ok:
-    exclusions.append("dairy")  # Append 'dairy' to exclusions list if answered 'n' to dairy in beginning
+    exclusions.append("dairy")  # Append "dairy" to exclusions list if answered "n" to dairy in beginning
 if not eggs_ok:
-    exclusions.append("eggs")  # Append 'eggs' to exclusions list if answered 'n' to eggs in beginning
+    exclusions.append("eggs")  # Append "eggs" to exclusions list if answered "n" to eggs in beginning
 
 exclusions_param = ",".join(exclusions)  # Set up the exclusion parameter for the API call
 # <<< End of User Preferences >>>
