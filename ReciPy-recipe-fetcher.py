@@ -243,6 +243,6 @@ input("\nPress [Enter] to exit...\n>>> "); print("Enter")
 print("\nReciPy will exit in 5 seconds.", end="")
 slp(1)
 for i in range(5, 1, -1):
-    print('.', end="", flush=True);
+    print('.', end="", flush=True)
     slp(1)
 print("\n\nExit Code [0]\n")
