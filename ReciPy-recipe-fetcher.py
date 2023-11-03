@@ -149,6 +149,7 @@ def exit_sequence():
         print(".", end="", flush=True)
         slp(1)
     print("\n\nExit Code [0]\n")
+    slp(1)
 
 # <<< End of class, function, and API construction definitions. >>>
 
