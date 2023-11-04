@@ -35,7 +35,7 @@ I came up with ReciPy mainly to impress my fiancée by finding random new recipe
 
 My initial plan was to store pre-set recipes in my Python program. Aggregating and storing these static recipes might take forever in itself and for the user, where's the fun in that?
 
-As a means to get access to thousands of recipes from online (and also to challenge myself), I decided to learn about, and make use of **APIs**, to bring these recipes with my program.
+As a means to get access to thousands of recipes from online (and also to challenge myself), I decided to learn about, and make use of **APIs**, to bring these recipes to users with my program.
 
 ### APIs: A Brief Overview
 
@@ -43,17 +43,18 @@ As a means to get access to thousands of recipes from online (and also to challe
 
 To serve as a non-technical analogy, APIs are akin to waiters in a restaurant. They: 
 1. Take meal requests from patrons;
-2. Standardise those requests in a way that chefs can understand; and
+2. Standardise those requests in format appropriate for chefs and their teams; and
 3. Return to patrons with the dishes they requested.
 
-**_APIs are everywhere we look -_**
+**APIs are everywhere we look -**
+
 * When you check the weather using an app on your phone, it's probably using a Yahoo! or AccuWeather API to do so. 
 
 * When businesses display an interactive map with a red pin on their website's "Find Us" page, they're likely using a Google API.
 
-* When a website allows you to sign in with your Microsoft / Office 365 account, they're likely leveraging Microsoft authentication APIs.
+* When a service allows you to sign in with your Microsoft / Office 365 account, it relies on Microsoft authentication APIs.
 
-In short, APIs are essential to the functionality of most software we use in our day-to-day.
+In short, APIs are fundamental to the functionality of most software we use in our day-to-day.
 
 ## Diving into Spoonacular
 
