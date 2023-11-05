@@ -16,26 +16,27 @@ def recipy():
         global logo
         logo = """
         #######                      ##   #######           
-        ##   ##                           ##   ##          
-        ##   ##   #####    #####  ####    ##   ##  ##  ##  
-        ######   ##   ##  ##        ##    ######   ##  ##  
-        ## ##    #######  ##        ##    ##       ##  ##  
-        ##  ##   ##       ##        ##    ##        #####  
-        ##   ##   #####    #####  ######  ##           ##  
+         ##   ##                           ##   ##          
+         ##   ##   #####    #####  ####    ##   ##  ##  ##  
+         ######   ##   ##  ##        ##    ######   ##  ##  
+         ## ##    #######  ##        ##    ##       ##  ##  
+         ##  ##   ##       ##        ##    ##        #####  
+         ##   ##   #####    #####  ######  ##           ##  
                                                     ####  
         """
         print(logo+"\n") # Prints ASCII logo above
         slp(1)
-        print("ReciPy - a simple Python program for providing recipes.")
+        print("ReciPy - a simple Python program for providing recipes.\n")
         slp(2)
-        disclaimer_text = """
-***DISCLAIMER***:
+        disclaimer_text = """*DISCLAIMER*
+This program is a pet-project and has not been made with any commercial motive in mind.
 API provided by Spoonacular (www.spoonacular.com).
 Spoonacular recipes are crowd-sourced and aggregated from a wide range of sources.
 Formatting and layout inconsistencies between recipes can (and do) affect ReciPy's outputs.
 Some recipes on Spoonacular are categorised incorrectly or contain inaccurate information.
-Some recipes on Spoonacular are backlinks and referrals to people's own websites.
-"""
+Some recipe instructions merely consist of hyperlinks to the recipe on another website.
+
+Press Ctrl+C to exit at any time."""
         for line in disclaimer_text.split("\n"):
                 print(line)
                 slp(1)
@@ -184,25 +185,20 @@ Some recipes on Spoonacular are backlinks and referrals to people's own websites
             for i in range(3, 0, -1):
                 print(".", end="", flush=True)
                 slp(1)
-            file.write(f"\n```\n{logo}\n```")
-            file.write("\n\n# ReciPy Recipe Export\n")
-            file.write(f"Generated on {fulldatetime}\n")
+            file.write(f"\n```\n{logo}\n```\n\n# ReciPy Recipe Export\n\nGenerated on {fulldatetime}\n")
             if vegan:
-                file.write("**Dietary Preference:**\nVegan")
+                file.write("### Dietary Preference:\nVegan")
             if vegetarian:
-                file.write("**Dietary Preference:**\nVegetarian")
+                file.write("### Dietary Preference:\nVegetarian")
             if len(exclusions) > 0:
                 file.write("\n\n### Exclusions & Intolerances: ")
                 for exclusion in exclusions:
                     exclusion_cap = exclusion.capitalize()
                     file.write(f"\n* {exclusion_cap}")
-            file.write(f"\n\n## Recipe: {title}\n")
-            file.write("\n### Ingredients:\n")
+            file.write(f"\n\n## Recipe: {title}\n\n### Ingredients:\n")
             for ingredient in ingredients:
                 file.write(f"* {ingredient}\n")
-            file.write("\n### Instructions:\n")
-            file.write(f"\n{instructions}\n")
-            file.write("\nThanks for using **ReciPy**!\nData provided by [Spoonacular](www.spoonacular.com)\n")
+            file.write("\n### Instructions:\n{instructions}\n\nThanks for using **ReciPy**!\nData provided by [Spoonacular](www.spoonacular.com)")
 
     def exit_sequence():
         input("\nPress [Enter] to exit\n>>> ")
@@ -212,14 +208,15 @@ Some recipes on Spoonacular are backlinks and referrals to people's own websites
             print(".", end="", flush=True)
             slp(1)
         print("\n\nExit Code [0]\n")
-        slp(1)
+        slp(0.5)
 
     # <<< End of class, function, and API construction definitions. >>>
 
     start_sequence()
 
     # <<< Start of User Preferences >>>
-    print("Welcome to ReciPy.")
+    slp(1)
+    print("\nWelcome to ReciPy.")
     slp(1)
     vegan = get_yes_no_input("\nAre you vegan?")
     vegetarian = False
@@ -316,4 +313,4 @@ if __name__ == "__main__":
             print(".", end="", flush=True)
             slp(1)
         print("\n\nExit Code [2]\n")
-        slp(1)
+        slp(0.5)
