@@ -66,7 +66,7 @@ Press Ctrl+C to exit at any time."""
         def add_period(instruction):  # Inner function to add period to the instruction if not present.
             instruction = instruction.strip()  # Removing any extra spaces from start and end.
             endings = [".", "!", ".)", "!)"]
-            if not any(instruction.endswith(ending) for ending in endings:
+            if not any(instruction.endswith(ending) for ending in endings):
                 instruction += "."  # Add a period if not already there.
             return instruction
 
