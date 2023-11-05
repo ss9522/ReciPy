@@ -198,7 +198,7 @@ Press Ctrl+C to exit at any time."""
             file.write(f"\n\n## Recipe: {title}\n\n### Ingredients:\n")
             for ingredient in ingredients:
                 file.write(f"* {ingredient}\n")
-            file.write("\n### Instructions:\n{instructions}\n\nThanks for using **ReciPy**!\nData provided by [Spoonacular](www.spoonacular.com)")
+            file.write(f"\n### Instructions:\n{instructions}\n\nThanks for using **ReciPy**!\nData provided by [Spoonacular](www.spoonacular.com)")
 
     def exit_sequence():
         input("\nPress [Enter] to exit\n>>> ")
