@@ -74,13 +74,15 @@ Press Ctrl+C to exit at any time."""
             parser = MyHTMLParser()  # Create an instance of the parser.
             parser.feed(html_content)  # Feed the html content to the parser.
             cleaned_instructions_list = [add_period(step) for step in parser.instructions]  # Construct list of cleaned instructions after adding period.
-            html_content = ". ".join(cleaned_instructions_list)  # Converting the list into a string for further processing.
+            cleaned_instructions = "\n".join(f"{index}. {step}" for index, step in enumerate(cleaned_instructions_list, 1))  # Formatting the instructions.
+        else:
+            instructions_list = [add_period(instr) for instr in html_content.split(".") if instr.strip()]  # Split by periods and clean each instruction.
+            cleaned_instructions = "\n".join(f"{index}. {step}" for index, step in enumerate(instructions_list, 1))  # Joining the instructions to create a single string.
 
-        instructions_list = [add_period(instr) for instr in html_content.split(".") if instr.strip()]  # Split by periods and clean each instruction, regardless of whether <li> tags exist.
-        cleaned_instructions = "\n".join(f"{index}. {step}" for index, step in enumerate(instructions_list, 1))  # Joining the instructions to create a single string.
         cleaned_instructions = cleaned_instructions.replace("<ol>", "").replace("</ol>", "").replace("<p>", "").replace("</p>", "").strip()  # Check and remove the <ol> and </ol> tags if they are present.
 
         return cleaned_instructions
+
 
     def get_yes_no_input(prompt):  # Prompt the user for a yes or no input. Returns True for "y" and False for "n".
         
