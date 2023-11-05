@@ -259,7 +259,7 @@ Press Ctrl+C to exit at any time."""
     if not dairy_ok:
         exclusions.append("dairy")  # Append "dairy" to exclusions list if answered "n" to dairy in beginning
     if not eggs_ok:
-        exclusions.append("eggs")  # Append "eggs" to exclusions list if answered "n" to eggs in beginning
+        exclusions.append("egg")  # Append "eggs" to exclusions list if answered "n" to eggs in beginning
 
     exclusions_param = ",".join(exclusions)  # Set up the exclusion parameter for the API call
     # <<< End of User Preferences >>>
