@@ -29,17 +29,17 @@ def recipy():
         print("ReciPy - a simple Python program for providing recipes.\n")
         slp(2)
         disclaimer_text = """*DISCLAIMER*
-This program is a pet-project and has not been made with any commercial motive in mind.
-API provided by Spoonacular (www.spoonacular.com).
-Spoonacular recipes are crowd-sourced and aggregated from a wide range of sources.
-Formatting and layout inconsistencies between recipes can (and do) affect ReciPy's outputs.
-Some recipes on Spoonacular are categorised incorrectly or contain inaccurate information.
-Some recipe instructions merely consist of hyperlinks to the recipe on another website.
+- This program is a pet-project with no commercial intent.
+- Recipe data provided by Spoonacular (www.spoonacular.com).
+- Spoonacular recipes are aggregated from a wide range of sources.
+- Formatting differences between recipes can (and do) affect ReciPy's outputs.
+- Some recipes are incorrectly categorised or contain inaccurate information.
+- Some recipe instructions consist of hyperlinks to other websites.
 
 Press Ctrl+C to exit at any time."""
         for line in disclaimer_text.split("\n"):
                 print(line)
-                slp(1)
+                slp(0.1)
 
     class MyHTMLParser(HTMLParser):  # Subclass inherited from the imported HTMLParser
         def __init__(self):
@@ -65,7 +65,8 @@ Press Ctrl+C to exit at any time."""
 
         def add_period(instruction):  # Inner function to add period to the instruction if not present.
             instruction = instruction.strip()  # Removing any extra spaces from start and end.
-            if not instruction.endswith("."):
+            endings = [".", "!", ".)", "!)"]
+            if not any(instruction.endswith(ending) for ending in endings:
                 instruction += "."  # Add a period if not already there.
             return instruction
 
@@ -91,22 +92,22 @@ Press Ctrl+C to exit at any time."""
                 print("Invalid input.\n")  # If input doesn't start with "y" or "n", keep asking the user until it does (within while True loop).
 
     def find_recipe():  # Encapsulated program flow into function to make way for continuous loop
-        print("\nFetching recipe", end="")
-        for i in range(3, 0, -1):
-            print(".", end="", flush=True)
-            slp(1)
+        print("\nFetching recipe...\n")
+        slp(1)
         response = requests.get(BASE_URL, headers=headers, params=parameters)  # API request
 
         if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
-            print(f"\n\nError fetching random recipe: Code - {response.status_code}\n")  # Verbose
+            print(f"\nError fetching random recipe: Code - {response.status_code}\n")  # Verbose
             if response.status_code == 401:
+                slp(1)
                 global API_KEY
                 API_KEY = input("Not Authorised. Could you check your API key and re-enter it below?\n>>> ")
                 headers["x-api-key"] = API_KEY
-                print("\n\nRetrying", end="")
+                print("\nRetrying", end="")
                 for i in range(3, 0, -1):
                     print(".", end="", flush=True)
                     slp(1)
+                print("\n\n")
                 response = requests.get(BASE_URL, headers=headers, params=parameters)
 
         recipe_id = response.json()["recipes"][0]["id"]
@@ -114,13 +115,12 @@ Press Ctrl+C to exit at any time."""
         response = requests.get(DETAILED_RECIPE_URL.format(id=recipe_id), params={"apiKey": API_KEY})
 
         if response.status_code != 200:  # Code 200 indicates success. Anything else, we'll want to know.
-            print(f"\n\nError fetching detailed recipe: Code - {response.status_code}")
+            print(f"\n\nError fetching detailed recipe: Code - {response.status_codye}")
 
         recipe_info = response.json()
         # Uncomment to debug
         # print("--------------------\nDebug Output: Raw Instructions:", recipe_info.get("instructions"),"\n--------------------")
 
-        print("\n")
         title, ingredients, instructions = extract_recipe_information(recipe_info)
 
         print("\n")
@@ -133,7 +133,7 @@ Press Ctrl+C to exit at any time."""
                 print(".", end="", flush=True)
                 slp(1)
             fs_friendly_title = make_fs_friendly(title)
-            filename = f"ReciPy-{fs_friendly_title}-{current_datetime}.md"
+            filename = f"{fs_friendly_title}-{current_datetime}.md"
             save_to_file(filename, title, ingredients, instructions)
             print(f"\n\nRecipe saved to {filename}. Please see \"ReciPy\" folder.")
         slp(1)
@@ -152,7 +152,7 @@ Press Ctrl+C to exit at any time."""
         return title, ingredients, instructions
 
     def display_recipe(title, ingredients, instructions):  # Define function that displays recipes in user-friendly format, taking title, ingredients, and cleaned instructions as arguments.
-        print(f"Recipe:\n{title}\n")  # Prints recipe title
+        print(f"Recipe: {title}\n")  # Prints recipe title
         slp(1)
         print("Ingredients:")
         slp(0.5)                        # |
@@ -202,9 +202,8 @@ Press Ctrl+C to exit at any time."""
 
     def exit_sequence():
         input("\nPress [Enter] to exit\n>>> ")
-        print("\nReciPy will exit in 5 seconds.", end="")
-        slp(1)
-        for i in range(5, 1, -1):
+        print("\nExiting ReciPy", end="")
+        for i in range(3, 0, -1):
             print(".", end="", flush=True)
             slp(1)
         print("\n\nExit Code [0]\n")
