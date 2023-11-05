@@ -31,7 +31,7 @@ def recipy():
         disclaimer_text = """*DISCLAIMER*
 - This program is a pet-project with no commercial intent.
 - Recipe data provided by Spoonacular (www.spoonacular.com).
-- Spoonacular recipes are aggregated from a wide range of sources.
+- Spoonacular recipes are aggregated from various individuals and websites.
 - Formatting differences between recipes can (and do) affect ReciPy's outputs.
 - Some recipes are incorrectly categorised or contain inaccurate information.
 - Some recipe instructions consist of hyperlinks to other websites.
