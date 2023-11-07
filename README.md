@@ -43,7 +43,7 @@ As a means to get access to thousands of recipes from online (and also to challe
 
 To serve as a non-technical analogy, APIs are akin to waiters in a restaurant. They: 
 1. Take meal requests from patrons;
-2. Standardise those requests in format appropriate for chefs and their teams; and
+2. Standardise those requests in a format appropriate for chefs and their teams; and
 3. Return to patrons with the dishes they requested.
 
 **APIs are everywhere we look -**
